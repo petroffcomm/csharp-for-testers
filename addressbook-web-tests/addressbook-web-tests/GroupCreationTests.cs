@@ -48,25 +48,31 @@ namespace WebAddressbookTests
             GroupData group = new GroupData("gname_1");
             group.Header = "gheader_1";
             group.Footer = "gfooter_1";
+            AccountData account = new AccountData("admin", "secret");
 
             OpenHomePage();
-            Login(new AccountData("admin", "secret"));
+            Login(account);
             GoToGroupsPage();
             InitNewGroupCreation();
             FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupsPage();
+            Logout();
+        }
+
+        private void Logout()
+        {
+            driver.FindElement(By.LinkText("Logout")).Click();
         }
 
         private void ReturnToGroupsPage()
         {
-            driver.FindElement(By.LinkText("Logout")).Click();
+            driver.FindElement(By.LinkText("group page")).Click();
         }
 
         private void SubmitGroupCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
-            driver.FindElement(By.LinkText("group page")).Click();
         }
 
         private void FillGroupForm(GroupData group)
