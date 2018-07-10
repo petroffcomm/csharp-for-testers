@@ -18,14 +18,15 @@ namespace WebAddressbookTests
             group.Footer = "gfooter_1";
             AccountData account = new AccountData("admin", "secret");
 
-            OpenHomePage();
-            Login(account);
-            GoToGroupsPage();
-            InitNewGroupCreation();
-            FillGroupForm(group);
-            SubmitGroupCreation();
-            ReturnToGroupsPage();
-            Logout();
+
+            app.Naviator.OpenHomePage();
+            app.Auth.Login(account);
+            app.Naviator.GoToGroupsPage();
+            app.Groups.InitNewGroupCreation();
+            app.Groups.FillGroupForm(group);
+            app.Groups.SubmitGroupCreation();
+            app.Groups.ReturnToGroupsPage();
+            app.Auth.Logout();
         }
     }
 }

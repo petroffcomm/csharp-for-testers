@@ -58,18 +58,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountData.cs" />
-    <Compile Include="ContactCreationTests.cs" />
-    <Compile Include="ContactData.cs" />
+    <Compile Include="Model\AccountData.cs" />
+    <Compile Include="AppManager\ApplicationManager.cs" />
+    <Compile Include="Tests\Contacts\ContactCreationTests.cs" />
+    <Compile Include="Model\ContactData.cs" />
+    <Compile Include="AppManager\Helpers\ContactHelper.cs" />
     <Compile Include="Figures\Circle.cs" />
     <Compile Include="Figures\Figure.cs" />
     <Compile Include="Figures\Square.cs" />
     <Compile Include="Figures\UnitTest1.cs" />
-    <Compile Include="GroupData.cs" />
-    <Compile Include="GroupRemovalTests.cs" />
+    <Compile Include="Model\GroupData.cs" />
+    <Compile Include="AppManager\Helpers\GroupHelper.cs" />
+    <Compile Include="Tests\Groups\GroupRemovalTests.cs" />
+    <Compile Include="AppManager\Helpers\HelperBase.cs" />
+    <Compile Include="AppManager\Helpers\LoginHelper.cs" />
+    <Compile Include="AppManager\Helpers\NavigationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GroupCreationTests.cs" />
-    <Compile Include="TestBase.cs" />
+    <Compile Include="Tests\Groups\GroupCreationTests.cs" />
+    <Compile Include="Tests\TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

@@ -3,9 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
+
 
 namespace WebAddressbookTests
 {
@@ -21,13 +19,13 @@ namespace WebAddressbookTests
 
             AccountData account = new AccountData("admin", "secret");
 
-            OpenHomePage();
-            Login(account);
-            InitContactCreation();
-            FillContactForm(contact);
-            SubmitContactCreation();
-            ReturnToHomePage();
-            Logout();
+            app.Naviator.OpenHomePage();
+            app.Auth.Login(account);
+            app.Contacts.InitContactCreation();
+            app.Contacts.FillContactForm(contact);
+            app.Contacts.SubmitContactCreation();
+            app.Contacts.ReturnToHomePage();
+            app.Auth.Logout();
         }
     }
 }
