@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
 using NUnit.Framework;
 
 
@@ -17,15 +15,15 @@ namespace WebAddressbookTests
             contact.FirstName = "Tester";
             contact.LastName = "Tester";
 
-            AccountData account = new AccountData("admin", "secret");
+            app.Contacts.Create(contact);
+        }
 
-            app.Naviator.OpenHomePage();
-            app.Auth.Login(account);
-            app.Contacts.InitContactCreation();
-            app.Contacts.FillContactForm(contact);
-            app.Contacts.SubmitContactCreation();
-            app.Contacts.ReturnToHomePage();
-            app.Auth.Logout();
+        [Test]
+        public void EmptyContactCreationTest()
+        {
+            ContactData contact = new ContactData();
+
+            app.Contacts.Create(contact);
         }
     }
 }

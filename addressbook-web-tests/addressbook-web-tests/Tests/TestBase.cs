@@ -15,11 +15,17 @@ namespace WebAddressbookTests
         public void SetupTest()
         {
             app = new ApplicationManager();
+
+            // This code was moved here from inheritants because all our tests
+            // require these actions at the same beginning.
+            app.Naviator.OpenHomePage();
+            app.Auth.Login(new AccountData("admin", "secret"));
         }
 
         [TearDown]
         public void TeardownTest()
         {
+            app.Auth.Logout();
             app.Stop();
         }
     }

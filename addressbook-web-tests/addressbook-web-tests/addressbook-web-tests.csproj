@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Model\AccountData.cs" />
     <Compile Include="AppManager\ApplicationManager.cs" />
+    <Compile Include="Tests\Contacts\ContactModificationTests.cs" />
     <Compile Include="Tests\Contacts\ContactCreationTests.cs" />
     <Compile Include="Model\ContactData.cs" />
     <Compile Include="AppManager\Helpers\ContactHelper.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Figures\UnitTest1.cs" />
     <Compile Include="Model\GroupData.cs" />
     <Compile Include="AppManager\Helpers\GroupHelper.cs" />
+    <Compile Include="Tests\Contacts\ContactRemovalTests.cs" />
+    <Compile Include="Tests\Groups\GroupModificationTests.cs" />
     <Compile Include="Tests\Groups\GroupRemovalTests.cs" />
     <Compile Include="AppManager\Helpers\HelperBase.cs" />
     <Compile Include="AppManager\Helpers\LoginHelper.cs" />
