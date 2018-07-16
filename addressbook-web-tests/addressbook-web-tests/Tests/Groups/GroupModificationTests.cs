@@ -8,14 +8,19 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : GroupTestBase
     {
         [Test]
         public void GroupModificationTest()
         {
-            GroupData newGroupData = new GroupData("gname_new");
-            newGroupData.Header = "gheader_new";
-            newGroupData.Footer = "gfooter_new";
+            CreateGroupForTestIfNecessary();
+
+            string postfix = DateTime.Now.ToString();
+            GroupData newGroupData = new GroupData("gname_new - " + postfix);
+            newGroupData.Header = null;
+            newGroupData.Footer = null;
+            //newGroupData.Header = "gheader_new";
+            //newGroupData.Footer = "gfooter_new";
 
             app.Groups.Modify(1, newGroupData);
         }

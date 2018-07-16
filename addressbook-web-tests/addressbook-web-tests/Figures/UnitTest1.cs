@@ -39,5 +39,22 @@ namespace addressbook_web_tests
 
             s2.Colored = true;
         }
+
+        [TestMethod]
+        public void IfTest()
+        {
+            double total = 900;
+            bool isVIPClient = true;
+
+            if (total > 1000 || isVIPClient)
+            {
+                total = total * 0.9;
+                System.Console.Out.Write("Скидки 10%, общая сумма " + total);
+            }
+            else
+            {
+                System.Console.Out.Write("Скидки нет, общая сумма "+ total);
+            }
+        }
     }
 }

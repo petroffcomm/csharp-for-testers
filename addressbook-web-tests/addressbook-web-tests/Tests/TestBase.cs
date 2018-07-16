@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-
 namespace WebAddressbookTests
 {
     public class TestBase
@@ -12,21 +11,23 @@ namespace WebAddressbookTests
         protected ApplicationManager app;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            app = new ApplicationManager();
+            app = ApplicationManager.GetInstance();
 
-            // This code was moved here from inheritants because all our tests
-            // require these actions at the same beginning.
+            // This part of code was moved here from TestBase inheritants because
+            // all our tests require these actions at the same beginning.
             app.Naviator.OpenHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
         }
 
         [TearDown]
         public void TeardownTest()
         {
+            app = ApplicationManager.GetInstance();
             app.Auth.Logout();
-            app.Stop();
+
+            // Method implemenentation was moved to the ApplicationManager's destructor.
+            //app.Stop();
         }
     }
 }

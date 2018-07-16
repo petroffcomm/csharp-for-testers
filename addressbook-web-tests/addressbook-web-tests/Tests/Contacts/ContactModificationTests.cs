@@ -6,11 +6,13 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactModificationTests : TestBase
+    public class ContactModificationTests : ContactTestBase
     {
         [Test]
         public void ContactModificationTest()
         {
+            CreateContactForTestIfNecessary();
+
             ContactData contact = new ContactData();
             string postfix = DateTime.Now.ToString();
             contact.FirstName = "New FirstName - " + postfix;
