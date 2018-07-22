@@ -14,6 +14,8 @@ namespace WebAddressbookTests
         public void GroupModificationTest()
         {
             CreateGroupForTestIfNecessary();
+            
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             string postfix = DateTime.Now.ToString();
             GroupData newGroupData = new GroupData("gname_new - " + postfix);
@@ -22,7 +24,14 @@ namespace WebAddressbookTests
             //newGroupData.Header = "gheader_new";
             //newGroupData.Footer = "gfooter_new";
 
-            app.Groups.Modify(1, newGroupData);
+            app.Groups.Modify(0, newGroupData);
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+
+            oldGroups[0].Name = newGroupData.Name;
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
         }
     }
 }

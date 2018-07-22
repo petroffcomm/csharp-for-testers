@@ -56,5 +56,16 @@ namespace addressbook_web_tests
                 System.Console.Out.Write("Скидки нет, общая сумма "+ total);
             }
         }
+
+        [TestMethod]
+        public void TestCycles()
+        {
+            string[] words = new string[] { "Let", "me", "tell", "you", "something", "really", "interesting" };
+
+            foreach(string element in words)
+            {
+                System.Console.Out.Write(element + " ");
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 
@@ -18,7 +19,17 @@ namespace WebAddressbookTests
             contact.FirstName = "New FirstName - " + postfix;
             contact.LastName = "New LastName - " + postfix;
 
-            app.Contacts.Edit(1, contact);
+            List<ContactData> oldContacts = app.Contacts.GetContactsList();
+
+            app.Contacts.Edit(0, contact);
+
+            List<ContactData> newContacts = app.Contacts.GetContactsList();
+
+            oldContacts[0].FirstName = contact.FirstName;
+            oldContacts[0].LastName = contact.LastName;
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }

@@ -47,6 +47,27 @@ namespace WebAddressbookTests
             return this;
         }
 
+        internal List<ContactData> GetContactsList()
+        {
+            appmanager.Naviator.OpenHomePage();
+            List<ContactData> contacts = new List<ContactData>();
+
+            ICollection<IWebElement> tableRecords = driver.FindElements(By.CssSelector("tr[name=entry]"));
+
+            foreach (IWebElement contactTableRec in tableRecords)
+            {
+                IList<IWebElement> contactTableRecCells = contactTableRec.FindElements(By.TagName("td"));
+
+                ContactData contact = new ContactData();
+                contact.FirstName = contactTableRecCells[2].Text;
+                contact.LastName = contactTableRecCells[1].Text;
+
+                contacts.Add(contact);
+            }
+
+            return contacts;
+        }
+
         public ContactHelper InitContactCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
@@ -55,6 +76,7 @@ namespace WebAddressbookTests
 
         public ContactHelper InitContactModification(int index)
         {
+            index += 1;
             driver.FindElement(
                 By.XPath("(//*[@id='maintable']//img[@alt='Edit'])[" + index + "]"))
                 .Click();
@@ -63,6 +85,7 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContactByIndex(int index)
         {
+            index += 1;
             driver.FindElement(
                 By.XPath("(//table[@id='maintable']//input[@type='checkbox'])[" + index + "]"))
                 .Click();

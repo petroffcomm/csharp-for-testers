@@ -48,6 +48,20 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            appmanager.Naviator.GoToGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }
+
+            return groups;
+        }
+
         public GroupHelper InitNewGroupCreation()
         {
             driver.FindElement(By.Name("new")).Click();
@@ -88,6 +102,7 @@ namespace WebAddressbookTests
 
         public GroupHelper SelectGroup(int index)
         {
+            index += 1;
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
             return this;
         }
