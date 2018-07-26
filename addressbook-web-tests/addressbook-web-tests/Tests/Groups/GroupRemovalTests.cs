@@ -17,12 +17,14 @@ namespace WebAddressbookTests
             CreateGroupForTestIfNecessary();
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
-
-            app.Groups.Delete(0);
+            int groupToRemove = 0;
+            app.Groups.Delete(groupToRemove);
+            // First check if lists' sizes are equal
+            Assert.AreEqual(oldGroups.Count - 1, app.Groups.Count());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
 
-            oldGroups.RemoveAt(0);
+            oldGroups.RemoveAt(groupToRemove);
             Assert.AreEqual(newGroups, oldGroups);
         }
     }

@@ -13,7 +13,7 @@ namespace WebAddressbookTests
         public void ContactModificationTest()
         {
             CreateContactForTestIfNecessary();
-
+            int contactToModify = 0;
             ContactData contact = new ContactData();
             string postfix = DateTime.Now.ToString();
             contact.FirstName = "New FirstName - " + postfix;
@@ -21,12 +21,12 @@ namespace WebAddressbookTests
 
             List<ContactData> oldContacts = app.Contacts.GetContactsList();
 
-            app.Contacts.Edit(0, contact);
+            app.Contacts.Edit(contactToModify, contact);
 
             List<ContactData> newContacts = app.Contacts.GetContactsList();
 
-            oldContacts[0].FirstName = contact.FirstName;
-            oldContacts[0].LastName = contact.LastName;
+            oldContacts[contactToModify].FirstName = contact.FirstName;
+            oldContacts[contactToModify].LastName = contact.LastName;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);

@@ -21,6 +21,8 @@ namespace WebAddressbookTests
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Create(group);
+            // First check if lists' sizes are equal
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.Count());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
 
@@ -40,6 +42,8 @@ namespace WebAddressbookTests
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Create(group);
+            // First check if lists' sizes are equal
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.Count());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
 
@@ -59,6 +63,8 @@ namespace WebAddressbookTests
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Create(group);
+            // First check if lists' sizes are equal
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.Count());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
 

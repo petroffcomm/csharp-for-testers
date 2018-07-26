@@ -9,6 +9,7 @@ namespace WebAddressbookTests
 {
     public class GroupHelper : HelperBase
     {
+        private List<GroupData> groupCache = null;
 
         public GroupHelper(ApplicationManager appmanager)
             : base(appmanager)
@@ -50,16 +51,24 @@ namespace WebAddressbookTests
 
         public List<GroupData> GetGroupList()
         {
-            List<GroupData> groups = new List<GroupData>();
-            appmanager.Naviator.GoToGroupsPage();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
-
-            foreach (IWebElement element in elements)
+            if (groupCache == null)
             {
-                groups.Add(new GroupData(element.Text));
+                groupCache = new List<GroupData>();
+                appmanager.Naviator.GoToGroupsPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+
+                foreach (IWebElement element in elements)
+                {
+                    GroupData group = new GroupData(element.Text)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    };
+
+                    groupCache.Add(group);
+                }
             }
 
-            return groups;
+            return new List<GroupData>(groupCache);
         }
 
         public GroupHelper InitNewGroupCreation()
@@ -79,6 +88,9 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            // Reset cache
+            groupCache = null;
+
             return this;
         }
 
@@ -91,6 +103,9 @@ namespace WebAddressbookTests
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            // Reset cache
+            groupCache = null;
+
             return this;
         }
 
@@ -110,6 +125,9 @@ namespace WebAddressbookTests
         public GroupHelper RemoveGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            // Reset cache
+            groupCache = null;
+
             return this;
         }
 

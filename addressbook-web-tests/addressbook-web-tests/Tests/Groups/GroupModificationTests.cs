@@ -17,6 +17,8 @@ namespace WebAddressbookTests
             
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
+            int groupToModify = 0;
+
             string postfix = DateTime.Now.ToString();
             GroupData newGroupData = new GroupData("gname_new - " + postfix);
             newGroupData.Header = null;
@@ -24,11 +26,13 @@ namespace WebAddressbookTests
             //newGroupData.Header = "gheader_new";
             //newGroupData.Footer = "gfooter_new";
 
-            app.Groups.Modify(0, newGroupData);
+            app.Groups.Modify(groupToModify, newGroupData);
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
+            // First check if lists' sizes are equal
+            Assert.AreEqual(oldGroups.Count, app.Groups.Count());
 
-            oldGroups[0].Name = newGroupData.Name;
+            oldGroups[groupToModify].Name = newGroupData.Name;
             oldGroups.Sort();
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);

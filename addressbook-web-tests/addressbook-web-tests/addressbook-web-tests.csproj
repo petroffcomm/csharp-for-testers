@@ -58,6 +58,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\BaseDataObj.cs" />
     <Compile Include="Tests\ContactTestBase.cs" />
     <Compile Include="Model\AccountData.cs" />
     <Compile Include="AppManager\ApplicationManager.cs" />

@@ -6,62 +6,27 @@ using System.Threading.Tasks;
 
 namespace WebAddressbookTests
 {
-    public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
+    public class GroupData : BaseDataObj, IEquatable<GroupData>, IComparable<GroupData>
     {
-        private string name;
-        private string header = "";
-        private string footer = "";
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Header { get; set; }
+        public string Footer { get; set; }
 
         public GroupData(string name)
         {
-            this.name = name;
-            this.header = "";
-            this.footer = "";
+            this.Name = name;
+            this.Header = "";
+            this.Footer = "";
         }
 
         public GroupData(string name, string header, string footer)
         {
-            this.name = name;
-            this.header = header;
-            this.footer = footer;
+            this.Name = name;
+            this.Header = header;
+            this.Footer = footer;
         }
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
-        }
-
-        public string Header
-        {
-            get
-            {
-                return header;
-            }
-            set
-            {
-                header = value;
-            }
-        }
-
-        public string Footer
-        {
-            get
-            {
-                return footer;
-            }
-            set
-            {
-                footer = value;
-            }
-        }
-
+ 
         public bool Equals(GroupData other)
         {
             if (Object.ReferenceEquals(other, null))
@@ -74,7 +39,9 @@ namespace WebAddressbookTests
                 return true;
             }
 
-            return Name == other.Name;
+            bool ids_are_equal = (Id is null || other.Id is null || Id == other.Id);
+
+            return ids_are_equal && Name == other.Name;
         }
 
         public int CompareTo(GroupData other)
@@ -83,7 +50,20 @@ namespace WebAddressbookTests
             {
                 return 1;
             }
-            return Name.CompareTo(other.Name);
+
+            /**int result = comparisonWithCheckForNULL(Id, other.Id);
+            if (result != 0)
+                return result;**/
+
+            int result = comparisonWithCheckForNULL(Name, other.Name);
+            if (result != 0)
+                return result;
+
+            result = comparisonWithCheckForNULL(Id, other.Id);
+            if (result != 0)
+                return result;
+
+            return 0;
         }
 
         public override int GetHashCode()
@@ -93,7 +73,7 @@ namespace WebAddressbookTests
 
         public override string ToString()
         {
-            return "name = " + Name;
+            return String.Format("Id = {0}; name = {1};", Id, Name);
         }
     }
 }
