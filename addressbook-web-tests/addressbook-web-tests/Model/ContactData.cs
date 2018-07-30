@@ -33,6 +33,47 @@ namespace WebAddressbookTests
         public string SecondaryPhone { get; set; }
         public string Notes { get; set; }
 
+        private string allPhones;
+        public string AllPhones
+        {
+            get
+            {
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    return (GetPhoneFormatted(HomePhone) + GetPhoneFormatted(MobilePhone) + GetPhoneFormatted(WorkPhone)).Trim();
+                }
+            }
+            set
+            {
+                allPhones = value;
+            }
+        }
+
+
+        private string allEmails;
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                else
+                {
+                    return (GetEmailFormatted(Email1) + GetEmailFormatted(Email2) + GetEmailFormatted(Email3)).Trim();
+                }
+            }
+            set
+            {
+                allEmails = value;
+            }
+        }
+
 
         public ContactData()
         {
@@ -91,6 +132,7 @@ namespace WebAddressbookTests
 
             return FirstName == other.FirstName 
                 && LastName == other.LastName
+                && PrimaryAddress == other.PrimaryAddress
                 && ids_are_equal;
         }
 
@@ -122,6 +164,10 @@ namespace WebAddressbookTests
             if (result != 0)
                 return result;
 
+            result = comparisonWithCheckForNULL(PrimaryAddress, other.PrimaryAddress);
+            if (result != 0)
+                return result;
+
             result = comparisonWithCheckForNULL(Id, other.Id);
             if (result != 0)
                 return result;
@@ -139,6 +185,29 @@ namespace WebAddressbookTests
         public override string ToString()
         {
             return String.Format("id = {0}; firstName = {1}; lastName = {2}", Id, FirstName, LastName);
+        }
+
+
+        private string GetPhoneFormatted(string phone)
+        /** Format phone number as if it's being displayed on contacts table view**/
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+
+            return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+        }
+
+
+        private string GetEmailFormatted(string email)
+        {
+            if (email == null || email == "")
+            {
+                return "";
+            }
+
+            return email + "\r\n";
         }
     }
 }

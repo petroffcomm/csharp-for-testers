@@ -56,22 +56,70 @@ namespace WebAddressbookTests
                 appmanager.Naviator.OpenHomePage();
                 contactCache = new List<ContactData>();
 
-                ICollection<IWebElement> tableRecords = driver.FindElements(By.CssSelector("tr[name=entry]"));
+                ICollection<IWebElement> tableRecords = driver.FindElements(By.Name("entry"));
 
                 foreach (IWebElement contactTableRec in tableRecords)
                 {
-                    IList<IWebElement> contactTableRecCells = contactTableRec.FindElements(By.TagName("td"));
+                    /**IList<IWebElement> contactTableRecCells = contactTableRec.FindElements(By.TagName("td"));
 
-                    ContactData contact = new ContactData();
-                    contact.FirstName = contactTableRecCells[2].Text;
-                    contact.LastName = contactTableRecCells[1].Text;
-                    contact.Id = contactTableRecCells[0].FindElement(By.TagName("input")).GetAttribute("id");
+                    ContactData contact = new ContactData()
+                    {
+                        FirstName = contactTableRecCells[2].Text,
+                        LastName = contactTableRecCells[1].Text,
+                        Id = contactTableRecCells[0].FindElement(By.TagName("input")).GetAttribute("id")
+                    };**/
+                    ContactData contact = BuildContactFromContactsTableEntry(contactTableRec);
 
                     contactCache.Add(contact);
                 }
             }
 
             return new List<ContactData>(contactCache);
+        }
+
+        public ContactData GetContactInfoFormTableByIndex(int index)
+        {
+            appmanager.Naviator.OpenHomePage();
+            IWebElement contactsTableRecord = driver.FindElements(By.Name("entry"))[index];
+
+            return BuildContactFromContactsTableEntry(contactsTableRecord);
+        }
+
+        private ContactData BuildContactFromContactsTableEntry(IWebElement tableRecord)
+        {
+            IList<IWebElement> cells = tableRecord.FindElements(By.TagName("td"));
+
+            ContactData contact = new ContactData()
+            {
+                FirstName = cells[2].Text,
+                LastName = cells[1].Text,
+                PrimaryAddress = cells[3].Text,
+                AllEmails = cells[4].Text,
+                AllPhones = cells[5].Text,
+                Id = cells[0].FindElement(By.TagName("input")).GetAttribute("id")
+            };
+
+            return contact;
+        }
+
+        public ContactData GetContactInformationFormEditForm(int index)
+        {
+            appmanager.Naviator.OpenHomePage();
+            InitContactModification(index);
+
+            ContactData contact = new ContactData();
+            contact.Id = driver.FindElement(By.XPath("//form[@action='edit.php']//input[@type='hidden']")).GetAttribute("value");
+            contact.FirstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            contact.LastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            contact.PrimaryAddress = driver.FindElement(By.Name("address")).GetAttribute("value");
+            contact.HomePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            contact.MobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            contact.WorkPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            contact.Email1 = driver.FindElement(By.Name("email")).GetAttribute("value");
+            contact.Email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            contact.Email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
+            return contact;
         }
 
         public ContactHelper InitContactCreation()
@@ -82,19 +130,27 @@ namespace WebAddressbookTests
 
         public ContactHelper InitContactModification(int index)
         {
-            index += 1;
+            /**index += 1;
             driver.FindElement(
                 By.XPath("(//*[@id='maintable']//img[@alt='Edit'])[" + index + "]"))
-                .Click();
+                .Click();**/
+
+            // Alternative implementation
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a")).Click();
+
             return this;
         }
 
         public ContactHelper SelectContactByIndex(int index)
         {
             index += 1;
+
             driver.FindElement(
                 By.XPath("(//table[@id='maintable']//input[@type='checkbox'])[" + index + "]"))
                 .Click();
+
             return this;
         }
 
