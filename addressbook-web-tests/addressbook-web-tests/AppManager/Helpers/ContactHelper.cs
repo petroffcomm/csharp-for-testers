@@ -17,6 +17,7 @@ namespace WebAddressbookTests
         {
         }
 
+
         public ContactHelper Create(ContactData contact)
         {
             appmanager.Naviator.OpenHomePage();
@@ -27,6 +28,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+
 
         public ContactHelper Edit(int contactIndex, ContactData newContactData)
         {
@@ -39,6 +41,7 @@ namespace WebAddressbookTests
             return this;
         }
 
+
         public ContactHelper Delete(int contactIndex)
         {
             appmanager.Naviator.OpenHomePage();
@@ -48,6 +51,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+
 
         internal List<ContactData> GetContactsList()
         {
@@ -60,14 +64,6 @@ namespace WebAddressbookTests
 
                 foreach (IWebElement contactTableRec in tableRecords)
                 {
-                    /**IList<IWebElement> contactTableRecCells = contactTableRec.FindElements(By.TagName("td"));
-
-                    ContactData contact = new ContactData()
-                    {
-                        FirstName = contactTableRecCells[2].Text,
-                        LastName = contactTableRecCells[1].Text,
-                        Id = contactTableRecCells[0].FindElement(By.TagName("input")).GetAttribute("id")
-                    };**/
                     ContactData contact = BuildContactFromContactsTableEntry(contactTableRec);
 
                     contactCache.Add(contact);
@@ -77,13 +73,47 @@ namespace WebAddressbookTests
             return new List<ContactData>(contactCache);
         }
 
-        public ContactData GetContactInfoFormTableByIndex(int index)
+
+        public ContactData GetContactInformationFormEditForm(int index)
+        {
+            appmanager.Naviator.OpenHomePage();
+            InitContactModification(index);
+
+            ContactData contact = new ContactData();
+            contact.Id = driver.FindElement(By.XPath("//form[@action='edit.php']//input[@type='hidden']")).GetAttribute("value");
+            contact.FirstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            contact.MiddleName = driver.FindElement(By.Name("middlename")).GetAttribute("value");
+            contact.LastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            contact.Nickname = driver.FindElement(By.Name("nickname")).GetAttribute("value");
+            contact.Company = driver.FindElement(By.Name("company")).GetAttribute("value");
+            contact.Title = driver.FindElement(By.Name("title")).GetAttribute("value");
+            contact.PrimaryAddress = driver.FindElement(By.Name("address")).GetAttribute("value");
+            contact.SecondaryAddress = driver.FindElement(By.Name("address2")).GetAttribute("value");
+            contact.HomePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            contact.MobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            contact.WorkPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            contact.Fax = driver.FindElement(By.Name("fax")).GetAttribute("value");
+            contact.SecondaryPhone = driver.FindElement(By.Name("phone2")).GetAttribute("value");
+            contact.Email1 = driver.FindElement(By.Name("email")).GetAttribute("value");
+            contact.Email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            contact.Email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+            contact.HomePage = driver.FindElement(By.Name("homepage")).GetAttribute("value")
+                                                                      .Replace("http://", "")
+                                                                      .Replace("https://", "");
+            contact.Notes = driver.FindElement(By.Name("notes")).GetAttribute("value");
+
+            return contact;
+        }
+
+
+        public ContactData GetContactInfoFromTableByIndex(int index)
         {
             appmanager.Naviator.OpenHomePage();
             IWebElement contactsTableRecord = driver.FindElements(By.Name("entry"))[index];
 
             return BuildContactFromContactsTableEntry(contactsTableRecord);
         }
+
 
         private ContactData BuildContactFromContactsTableEntry(IWebElement tableRecord)
         {
@@ -102,31 +132,28 @@ namespace WebAddressbookTests
             return contact;
         }
 
-        public ContactData GetContactInformationFormEditForm(int index)
+
+        public string GetContactInformationFormDetailedView(int index)
         {
             appmanager.Naviator.OpenHomePage();
-            InitContactModification(index);
+            ViewContactDetailsByIndex(index);
+            string content = driver.FindElement(By.Id("content")).Text
+                /**.Replace("<br>", "")
+                .Replace("<b>", "")
+                .Replace("</b>", "")
+                .Replace("<i>", "")
+                .Replace("</i>", "")**/;
 
-            ContactData contact = new ContactData();
-            contact.Id = driver.FindElement(By.XPath("//form[@action='edit.php']//input[@type='hidden']")).GetAttribute("value");
-            contact.FirstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
-            contact.LastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
-            contact.PrimaryAddress = driver.FindElement(By.Name("address")).GetAttribute("value");
-            contact.HomePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
-            contact.MobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
-            contact.WorkPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
-            contact.Email1 = driver.FindElement(By.Name("email")).GetAttribute("value");
-            contact.Email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
-            contact.Email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
-
-            return contact;
+            return content;
         }
+
 
         public ContactHelper InitContactCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
             return this;
         }
+
 
         public ContactHelper InitContactModification(int index)
         {
@@ -143,6 +170,16 @@ namespace WebAddressbookTests
             return this;
         }
 
+
+        public ContactHelper ViewContactDetailsByIndex(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+            return this;
+        }
+
+
         public ContactHelper SelectContactByIndex(int index)
         {
             index += 1;
@@ -153,6 +190,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+
 
         public ContactHelper FillContactForm(ContactData contact)
         {
@@ -189,6 +227,7 @@ namespace WebAddressbookTests
             return this;
         }
 
+
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
@@ -198,6 +237,7 @@ namespace WebAddressbookTests
             return this;
         }
 
+
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.XPath("//input[@name='update']")).Click();
@@ -206,6 +246,7 @@ namespace WebAddressbookTests
 
             return this;
         }
+
 
         public ContactHelper RemoveContact()
         {
@@ -217,16 +258,30 @@ namespace WebAddressbookTests
             return this;
         }
 
+
         public ContactHelper ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home page")).Click();
             return this;
         }
 
+
         public int Count()
         {
             appmanager.Naviator.OpenHomePage();
             return driver.FindElements(By.XPath("//table[@id='maintable']//input[@name='selected[]']")).Count;
+        }
+
+
+        public int GetNumberOfSearchResults()
+        {
+            appmanager.Naviator.OpenHomePage();
+            return int.Parse(driver.FindElement(By.Id("search_count")).Text);
+
+            // By using Regex
+            /** string text = driver.FindElement(By.TagName("label")).Text;
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value); **/
         }
     }
 }

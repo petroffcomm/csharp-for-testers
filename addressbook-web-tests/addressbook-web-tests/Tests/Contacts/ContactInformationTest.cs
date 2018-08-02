@@ -8,13 +8,15 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactInformationTests : AuthTestBase
+    public class ContactInformationTests : ContactTestBase
     {
         [Test]
         public void ContactInformationTest()
         {
-            int recordToCheck = 2;
-            ContactData fromTable = app.Contacts.GetContactInfoFormTableByIndex(recordToCheck);
+            CreateContactForTestIfNecessary();
+
+            int recordToCheck = 0;
+            ContactData fromTable = app.Contacts.GetContactInfoFromTableByIndex(recordToCheck);
             ContactData fromForm = app.Contacts.GetContactInformationFormEditForm(recordToCheck);
 
             //verification

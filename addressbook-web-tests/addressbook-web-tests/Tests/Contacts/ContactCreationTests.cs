@@ -16,6 +16,12 @@ namespace WebAddressbookTests
             string postfix = DateTime.Now.ToString();
             contact.FirstName = "TesterFname " + postfix;
             contact.LastName = "TesterLname " + postfix;
+            contact.Email1 = "test1@test.test";
+            contact.Email2 = "test2@test.test";
+            contact.Email3 = "test3@test.test";
+            contact.HomePhone = "+38(057)846569 ";
+            contact.MobilePhone = "+38(066)666-55-78";
+            contact.WorkPhone = "+38(057)524-56-99";
 
             List<ContactData> oldContacts = app.Contacts.GetContactsList();
             app.Contacts.Create(contact);

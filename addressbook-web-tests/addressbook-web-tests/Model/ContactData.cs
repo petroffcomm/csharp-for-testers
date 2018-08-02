@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
@@ -23,6 +24,7 @@ namespace WebAddressbookTests
         public string Email1 { get; set; }
         public string Email2 { get; set; }
         public string Email3 { get; set; }
+        public string HomePage { get; set; }
         public string BDay { get; set; }
         public string ADay { get; set; }
         public string BMonth { get; set; }
@@ -189,14 +191,15 @@ namespace WebAddressbookTests
 
 
         private string GetPhoneFormatted(string phone)
-        /** Format phone number as if it's being displayed on contacts table view**/
+        /** Format phone number as if it's being displayed on contacts table view **/
         {
             if (phone == null || phone == "")
             {
                 return "";
             }
 
-            return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+            // Replace space-char, hyphen-char and brackets
+            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
         }
 
 

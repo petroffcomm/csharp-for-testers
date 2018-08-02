@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\BaseDataObj.cs" />
+    <Compile Include="Tests\Contacts\ContactDetailsTest.cs" />
     <Compile Include="Tests\Contacts\ContactInformationTest.cs" />
     <Compile Include="Tests\ContactTestBase.cs" />
     <Compile Include="Model\AccountData.cs" />
@@ -84,7 +85,9 @@
     <Compile Include="Tests\Groups\GroupCreationTests.cs" />
     <Compile Include="Tests\GroupTestBase.cs" />
     <Compile Include="Tests\Login\LoginTests.cs" />
+    <Compile Include="Tests\SearchTests.cs" />
     <Compile Include="Tests\TestBase.cs" />
+    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
