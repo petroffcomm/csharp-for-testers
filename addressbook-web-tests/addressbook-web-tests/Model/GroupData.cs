@@ -13,6 +13,7 @@ namespace WebAddressbookTests
         public string Header { get; set; }
         public string Footer { get; set; }
 
+
         public GroupData(string name)
         {
             this.Name = name;
@@ -73,7 +74,7 @@ namespace WebAddressbookTests
 
         public override string ToString()
         {
-            return String.Format("Id = {0}; name = {1};", Id, Name);
+            return String.Format("Id = {0}; name = {1}; header = {2}; footer = {3}", Id, Name, Header, Footer);
         }
     }
 }
