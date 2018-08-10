@@ -56,7 +56,7 @@ namespace WebAddressbookTests
             {
                 // Generating random char-codes and appending then to the string.
                 // Taking into account that printable char-symbols start from 32th code.
-                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rndGenerator.NextDouble() * 223)));
+                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rndGenerator.NextDouble() * 65)));
             }
 
             return builder.ToString();

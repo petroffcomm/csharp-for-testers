@@ -13,6 +13,10 @@ namespace WebAddressbookTests
         public string Header { get; set; }
         public string Footer { get; set; }
 
+        // Empty constructor by XML Serialization library
+        public GroupData()
+        {
+        }
 
         public GroupData(string name)
         {

@@ -23,7 +23,7 @@ namespace WebAddressbookTests
                     Email3 = GetRandomAllowedStringFor(EMAIL, 30),
                     HomePhone = GetRandomAllowedStringFor(PHONE, 9),
                     MobilePhone = GetRandomAllowedStringFor(PHONE, 9),
-                    WorkPhone = GetRandomAllowedStringFor(PHONE, 9),
+                    WorkPhone = GetRandomAllowedStringFor(PHONE, 9)
                 });
             }
 

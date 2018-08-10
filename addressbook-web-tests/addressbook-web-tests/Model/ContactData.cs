@@ -180,7 +180,7 @@ namespace WebAddressbookTests
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() + FirstName.GetHashCode() + LastName.GetHashCode();
+            return FirstName.GetHashCode() + LastName.GetHashCode();
         }
 
 
