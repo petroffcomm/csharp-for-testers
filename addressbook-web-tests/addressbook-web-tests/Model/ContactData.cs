@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using LinqToDB.Mapping;
-using System.Globalization;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using LinqToDB.Mapping;
 
 namespace WebAddressbookTests
 {
     [Table(Name = "addressbook")]
     public class ContactData : BaseDataObj, IEquatable<ContactData>, IComparable<ContactData>
     {
-        [Column(Name = "id")]
+        [Column(Name = "id"), PrimaryKey]
         public string Id { get; set; }
 
         [Column(Name = "firstname")]
