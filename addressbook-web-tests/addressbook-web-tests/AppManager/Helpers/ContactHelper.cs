@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -30,10 +29,10 @@ namespace WebAddressbookTests
         }
 
 
-        public ContactHelper Edit(int contactIndex, ContactData newContactData)
+        public ContactHelper EditByIndex(int contactIndex, ContactData newContactData)
         {
             appmanager.Naviator.OpenHomePage();
-            InitContactModification(contactIndex);
+            InitContactModificationByIndex(contactIndex);
             FillContactForm(newContactData);
             SubmitContactModification();
             ReturnToHomePage();
@@ -42,10 +41,35 @@ namespace WebAddressbookTests
         }
 
 
-        public ContactHelper Delete(int contactIndex)
+        public ContactHelper EditById(ContactData newContactData)
+        {
+            appmanager.Naviator.OpenHomePage();
+            // newContactData object is considered to contain
+            // Id-value of object to modify
+            InitContactModificationById(newContactData.Id);
+            FillContactForm(newContactData);
+            SubmitContactModification();
+            ReturnToHomePage();
+
+            return this;
+        }
+
+
+        public ContactHelper DeleteByIndex(int contactIndex)
         {
             appmanager.Naviator.OpenHomePage();
             SelectContactByIndex(contactIndex);
+            RemoveContact();
+            appmanager.Naviator.OpenHomePage();
+
+            return this;
+        }
+
+
+        public ContactHelper DeleteById(string contactId)
+        {
+            appmanager.Naviator.OpenHomePage();
+            SelectContactById(contactId);
             RemoveContact();
             appmanager.Naviator.OpenHomePage();
 
@@ -77,7 +101,7 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFormEditForm(int index)
         {
             appmanager.Naviator.OpenHomePage();
-            InitContactModification(index);
+            InitContactModificationByIndex(index);
 
             ContactData contact = new ContactData();
             contact.Id = driver.FindElement(By.XPath("//form[@action='edit.php']//input[@type='hidden']")).GetAttribute("value");
@@ -155,7 +179,7 @@ namespace WebAddressbookTests
         }
 
 
-        public ContactHelper InitContactModification(int index)
+        public ContactHelper InitContactModificationByIndex(int index)
         {
             /**index += 1;
             driver.FindElement(
@@ -166,6 +190,19 @@ namespace WebAddressbookTests
             driver.FindElements(By.Name("entry"))[index]
                 .FindElements(By.TagName("td"))[7]
                 .FindElement(By.TagName("a")).Click();
+
+            return this;
+        }
+
+
+        public ContactHelper InitContactModificationById(string id)
+        {
+            driver.FindElement(
+                // get parent row of the checkbox to access required cells
+                By.XPath("//*[@name='entry']//*[@id='" + id + "']/parent::*/parent::*"))
+                .FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a"))
+                .Click();
 
             return this;
         }
@@ -192,6 +229,16 @@ namespace WebAddressbookTests
         }
 
 
+        public ContactHelper SelectContactById(string id)
+        {
+            driver.FindElement(
+                By.XPath("//table[@id='maintable']//input[@type='checkbox'][@id=" + id + "]"))
+                .Click();
+
+            return this;
+        }
+
+
         public ContactHelper FillContactForm(ContactData contact)
         {
             Type(By.Name("firstname"), contact.FirstName);
@@ -210,16 +257,14 @@ namespace WebAddressbookTests
             Type(By.Name("email2"), contact.Email2);
             Type(By.Name("email3"), contact.Email3);
 
-            if (contact.BDay != "")
-                new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.BDay);
-            new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.BMonth);
+            SelectDropdownItemByText(By.Name("bday"), contact.BDay);
+            SelectDropdownItemByText(By.Name("bmonth"), contact.BMonth);
             Type(By.Name("byear"), contact.BYear);
 
-            if (contact.ADay != "")
-                new SelectElement(driver.FindElement(By.Name("aday"))).SelectByText(contact.ADay);
-            new SelectElement(driver.FindElement(By.Name("amonth"))).SelectByText(contact.AMonth);
-
+            SelectDropdownItemByText(By.Name("aday"), contact.ADay);
+            SelectDropdownItemByText(By.Name("amonth"), contact.AMonth);
             Type(By.Name("ayear"), contact.AYear);
+
             Type(By.Name("address2"), contact.SecondaryAddress);
             Type(By.Name("phone2"), contact.SecondaryPhone);
             Type(By.Name("notes"), contact.Notes);

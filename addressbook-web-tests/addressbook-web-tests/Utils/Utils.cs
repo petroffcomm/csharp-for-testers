@@ -1,7 +1,47 @@
-﻿namespace WebAddressbookTests
+﻿using System.Text.RegularExpressions;
+
+namespace WebAddressbookTests
 {
     public static class Utils
     {
+        public static GroupData PrepareEntityForGroupsView(GroupData g)
+        {
+            string pattern = "\\s+";
+            Regex rgx = new Regex(pattern);
+
+            return new GroupData()
+            {
+                Name = SetNullOrValueOf(rgx.Replace(g.Name, " ").Trim()),
+                Header = g.Header,
+                Footer = g.Footer,
+                Id = g.Id
+            };
+        }
+
+
+        public static ContactData PrepareEntityForContactsView(ContactData c)
+        {
+            string pattern = "\\s+";
+            Regex rgx = new Regex(pattern);
+
+            return new ContactData()
+            {
+                Id = c.Id,
+                FirstName = SetNullOrValueOf(rgx.Replace(c.FirstName, " " ).Trim()),
+                LastName = SetNullOrValueOf(rgx.Replace(c.LastName, " ").Trim()),
+                HomePhone = SetNullOrValueOf(rgx.Replace(c.HomePhone, " ").Trim()),
+                MobilePhone = SetNullOrValueOf(rgx.Replace(c.MobilePhone, " ").Trim()),
+                WorkPhone = SetNullOrValueOf(rgx.Replace(c.WorkPhone, " ").Trim()),
+                Fax = SetNullOrValueOf(rgx.Replace(c.Fax, " ").Trim()),
+                SecondaryPhone = SetNullOrValueOf(rgx.Replace(c.SecondaryPhone, " ").Trim()),
+                Email1 = SetNullOrValueOf(rgx.Replace(c.Email1, " ").Trim()),
+                Email2 = SetNullOrValueOf(rgx.Replace(c.Email2, " ").Trim()),
+                Email3 = SetNullOrValueOf(rgx.Replace(c.Email3, " ").Trim()),
+                PrimaryAddress = c.PrimaryAddress.Trim()
+            };
+        }
+
+
         public static string PrepareDetailedViewForContact(ContactData contact)
         {
             string middleName = checkValueForEmptiness(contact.MiddleName);
@@ -39,6 +79,7 @@
             return contactDetaiedView.Trim();
         }
 
+
         private static string checkValueForEmptiness(string val)
         {
             if (val == "" || val == null)
@@ -47,12 +88,27 @@
             return val.Trim() + "\r\n";
         }
 
+
         private static string checkPhoneForEmptiness(string prefix, string phone)
         {
             if (phone == "" || phone == null)
                 return "";
 
             return prefix + ": " + phone.Trim() + "\r\n";
+        }
+
+
+        private static string SetNullOrValueOf(string param)
+        {
+            if (param == "")
+            {
+                return null;
+            }
+            else
+            {
+                return param;
+            }
+
         }
     }
 }

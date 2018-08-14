@@ -22,6 +22,9 @@ namespace WebAddressbookTests
         public const int EMAIL = 2;
 
 
+        public static bool PERFORM_LONG_UI_CHECKS = false;
+
+
         [SetUp]
         public void SetupApplicationManager()
         {
@@ -65,18 +68,18 @@ namespace WebAddressbookTests
 
         public static String GetRandomAllowedStringFor(int type, int lenght)
         {
-            string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
+            string allowedChars = " abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
             string strToReturn = "";
 
             if (type == GENERAL)
             {
-                allowedChars = "_.-abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
+                allowedChars = " _.-abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789";
                 strToReturn = genCharSeq(lenght, allowedChars);
             }
 
             if (type == PHONE)
             {
-                allowedChars = "0123456789";
+                allowedChars = " 0123456789";
                 strToReturn = "+" + genCharSeq(lenght, allowedChars);
             }
 

@@ -27,10 +27,11 @@ namespace WebAddressbookTests
             return this;
         }
 
-        internal GroupHelper Modify(int groupIndex, GroupData newGroupData)
+
+        internal GroupHelper ModifyByIndex(int groupIndex, GroupData newGroupData)
         {
             appmanager.Naviator.GoToGroupsPage();
-            SelectGroup(groupIndex);
+            SelectGroupByIndex(groupIndex);
             InitNewGroupModification();
             FillGroupForm(newGroupData);
             SubmitGroupModification();
@@ -39,10 +40,35 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper Delete(int groupIndex)
+
+        internal GroupHelper ModifyById(string groupId, GroupData newGroupData)
         {
             appmanager.Naviator.GoToGroupsPage();
-            SelectGroup(groupIndex);
+            SelectGroupById(groupId);
+            InitNewGroupModification();
+            FillGroupForm(newGroupData);
+            SubmitGroupModification();
+            ReturnToGroupsPage();
+
+            return this;
+        }
+
+
+        public GroupHelper DeleteById(string groupId)
+        {
+            appmanager.Naviator.GoToGroupsPage();
+            SelectGroupById(groupId);
+            RemoveGroup();
+            ReturnToGroupsPage();
+
+            return this;
+        }
+
+
+        public GroupHelper DeleteByIndex(int groupIndex)
+        {
+            appmanager.Naviator.GoToGroupsPage();
+            SelectGroupByIndex(groupIndex);
             RemoveGroup();
             ReturnToGroupsPage();
 
@@ -115,10 +141,16 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper SelectGroup(int index)
+        public GroupHelper SelectGroupByIndex(int index)
         {
             index += 1;
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            return this;
+        }
+
+        public GroupHelper SelectGroupById(string id)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]'][@value='" + id + "']")).Click();
             return this;
         }
 

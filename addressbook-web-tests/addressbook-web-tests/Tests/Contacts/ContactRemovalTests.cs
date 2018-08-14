@@ -10,15 +10,16 @@ namespace WebAddressbookTests
         public void ContactRemovalTest()
         {
             CreateContactForTestIfNecessary();
-            int contactToRemove = 0;
+            int contactNumToRemove = 0;
 
-            List<ContactData> oldContacts = app.Contacts.GetContactsList();
+            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
 
-            app.Contacts.Delete(contactToRemove);
+            ContactData contactToRemove = oldContacts[contactNumToRemove];
+            app.Contacts.DeleteById(contactToRemove.Id);
 
-            List<ContactData> newContacts = app.Contacts.GetContactsList();
+            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
 
-            oldContacts.RemoveAt(contactToRemove);
+            oldContacts.RemoveAt(contactNumToRemove);
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);

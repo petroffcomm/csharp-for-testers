@@ -4,36 +4,96 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using LinqToDB.Mapping;
+using System.Globalization;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace WebAddressbookTests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : BaseDataObj, IEquatable<ContactData>, IComparable<ContactData>
     {
+        [Column(Name = "id")]
         public string Id { get; set; }
+
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
+
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
+
+        [Column(Name = "middlename")]
         public string MiddleName { get; set; }
+
+        [Column(Name = "nickname")]
         public string Nickname { get; set; }
+
+        [Column(Name = "title")]
         public string Title { get; set; }
+
+        [Column(Name = "company")]
         public string Company { get; set; }
+
+        [Column(Name = "address")]
         public string PrimaryAddress { get; set; }
+
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
+
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
+
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
+
+        [Column(Name = "fax")]
         public string Fax { get; set; }
+
+        [Column(Name = "email")]
         public string Email1 { get; set; }
+
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
+
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
+
+        [Column(Name = "homepage")]
         public string HomePage { get; set; }
+
+        //[Column(Name = "")]
         public string BDay { get; set; }
+
+        //[Column(Name = "")]
         public string ADay { get; set; }
+
+        [Column(Name = "bmonth")]
         public string BMonth { get; set; }
+
+        [Column(Name = "amonth")]
         public string AMonth { get; set; }
+
+        [Column(Name = "byear")]
         public string BYear { get; set; }
+
+        [Column(Name = "ayear")]
         public string AYear { get; set; }
+
+        [Column(Name = "address2")]
         public string SecondaryAddress { get; set; }
+
+        [Column(Name = "phone2")]
         public string SecondaryPhone { get; set; }
+
+        [Column(Name = "notes")]
         public string Notes { get; set; }
+
+        // don't serialize/deserialize this field to/from XML and JSON
+        [XmlIgnore]
+        [JsonIgnore]
+        [Column(Name = "deprecated")]
+        public MySql.Data.Types.MySqlDateTime DeprecationDate { get; set; }
 
         private string allPhones;
         public string AllPhones
@@ -79,42 +139,39 @@ namespace WebAddressbookTests
 
         public ContactData()
         {
-            this.Init();
         }
 
 
         public ContactData(string name)
         {
-            this.Init();
             this.FirstName = name;
         }
 
 
-        private void Init()
+        public static List<ContactData> GetAllRecordsFromDB()
         {
-            this.FirstName = "";
-            this.MiddleName = "";
-            this.LastName = "";
-            this.Nickname = "";
-            this.Title = "";
-            this.Company = "";
-            this.PrimaryAddress = "";
-            this.HomePhone = "";
-            this.MobilePhone = "";
-            this.WorkPhone = "";
-            this.Fax = "";
-            this.Email1 = "";
-            this.Email2 = "";
-            this.Email3 = "";
-            this.BDay = "";
-            this.BMonth = "-";
-            this.BYear = "";
-            this.ADay = "";
-            this.AMonth = "-";
-            this.AYear = "";
-            this.SecondaryAddress = "";
-            this.SecondaryPhone = "";
-            this.Notes = "";
+            List<ContactData> contacts = new List<ContactData>();
+
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                /** c.Deprecated.Year == 0 - picks out only active records
+                    which weren't removed from UI **/
+
+                contacts = (from c in db.Contacts
+                            where c.DeprecationDate.Year == 0
+                            select c
+                            ).ToList();
+            }
+
+            // Process records to get them in proper format to compare with records from
+            // UI representation level
+            List<ContactData> contacts2 = new List<ContactData>();
+            foreach (ContactData c in contacts)
+            {
+                contacts2.Add(Utils.PrepareEntityForContactsView(c));
+            }
+
+            return contacts2;
         }
 
 
@@ -186,7 +243,7 @@ namespace WebAddressbookTests
 
         public override string ToString()
         {
-            return String.Format("id = {0}; firstName = {1}; lastName = {2}", Id, FirstName, LastName);
+            return String.Format("id = {0}; firstName = {1}; lastName = {2}; primaryAddress = {3}", Id, FirstName, LastName, PrimaryAddress);
         }
 
 

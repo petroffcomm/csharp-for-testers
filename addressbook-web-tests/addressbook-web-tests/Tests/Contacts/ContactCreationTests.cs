@@ -26,7 +26,10 @@ namespace WebAddressbookTests
                     Email3 = GetRandomAllowedStringFor(EMAIL, 30),
                     HomePhone = GetRandomAllowedStringFor(PHONE, 9),
                     MobilePhone = GetRandomAllowedStringFor(PHONE, 9),
-                    WorkPhone = GetRandomAllowedStringFor(PHONE, 9)
+                    WorkPhone = GetRandomAllowedStringFor(PHONE, 9),
+                    Fax = GetRandomAllowedStringFor(PHONE, 9),
+                    SecondaryPhone = GetRandomAllowedStringFor(PHONE, 9),
+                    PrimaryAddress = GetRandomAllowedStringFor(GENERAL, 40)
                 });
             }
 
@@ -49,19 +52,40 @@ namespace WebAddressbookTests
         }
 
 
-        [Test, TestCaseSource("ContactDataFromXmlFile")]
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContacts = app.Contacts.GetContactsList();
+            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
+
             app.Contacts.Create(contact);
 
-            List<ContactData> newContacts = app.Contacts.GetContactsList();
+            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
 
             oldContacts.Add(contact);
             oldContacts.Sort();
             newContacts.Sort();
 
             Assert.AreEqual(oldContacts, newContacts);
+        }
+        
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;
+            List<ContactData> fromUI = app.Contacts.GetContactsList();
+            DateTime end = DateTime.Now;
+            Console.WriteLine(end.Subtract(start));
+
+
+            start = DateTime.Now;
+            List<ContactData> fromDb = ContactData.GetAllRecordsFromDB();
+            end = DateTime.Now;
+            Console.WriteLine(end.Subtract(start));
+
+            fromDb.Sort();
+            fromUI.Sort();
+            Assert.AreEqual(fromDb, fromUI);
         }
     }
 }

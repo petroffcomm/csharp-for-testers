@@ -19,5 +19,20 @@ namespace WebAddressbookTests
                 app.Contacts.Create(contact);
             }
         }
+
+        [TearDown]
+        public void CompareContactsUI_DB()
+        {
+            if (PERFORM_LONG_UI_CHECKS)
+            {
+                List<ContactData> fromUI = app.Contacts.GetContactsList();
+                List<ContactData> fromDB = ContactData.GetAllRecordsFromDB();
+
+                fromUI.Sort();
+                fromDB.Sort();
+
+                Assert.AreEqual(fromUI, fromDB);
+            }
+        }
     }
 }

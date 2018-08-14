@@ -13,20 +13,27 @@ namespace WebAddressbookTests
         public void ContactModificationTest()
         {
             CreateContactForTestIfNecessary();
-            int contactToModify = 0;
-            ContactData contact = new ContactData();
+
+            int contactNumToModify = 5;
             string postfix = DateTime.Now.ToString();
-            contact.FirstName = "New FirstName - " + postfix;
-            contact.LastName = "New LastName - " + postfix;
+            ContactData contact = new ContactData()
+            {
+                FirstName = "New FirstName - " + postfix,
+                LastName = "New LastName - " + postfix
+            };
 
-            List<ContactData> oldContacts = app.Contacts.GetContactsList();
+            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
 
-            app.Contacts.Edit(contactToModify, contact);
+            contact.Id = oldContacts[contactNumToModify].Id;
+            app.Contacts.EditById(contact);
 
-            List<ContactData> newContacts = app.Contacts.GetContactsList();
+            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
 
-            oldContacts[contactToModify].FirstName = contact.FirstName;
-            oldContacts[contactToModify].LastName = contact.LastName;
+            // Perform contact modification in old list
+            oldContacts[contactNumToModify].FirstName = contact.FirstName;
+            oldContacts[contactNumToModify].LastName = contact.LastName;
+
+            // Compare results
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);

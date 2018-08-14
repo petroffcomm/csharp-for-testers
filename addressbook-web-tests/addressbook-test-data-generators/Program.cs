@@ -32,6 +32,7 @@ namespace addressbook_test_data_generators
             }
         }
 
+        static string errMsg = "Unrecognized or unsupporter file format.";
 
         /** Groups methods **/
 
@@ -63,7 +64,7 @@ namespace addressbook_test_data_generators
                         WriteGroupsToJsonFile(groups, writer);
                         break;
                     default:
-                        Console.WriteLine("Unrecognized file format.");
+                        Console.WriteLine(errMsg);
                         break;
                 }
                 writer.Close();
@@ -140,7 +141,10 @@ namespace addressbook_test_data_generators
                     Email3 = TestBase.GetRandomAllowedStringFor(TestBase.EMAIL, 30),
                     HomePhone = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9),
                     MobilePhone = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9),
-                    WorkPhone = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9)
+                    WorkPhone = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9),
+                    Fax = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9),
+                    SecondaryPhone = TestBase.GetRandomAllowedStringFor(TestBase.PHONE, 9),
+                    PrimaryAddress = TestBase.GetRandomAllowedStringFor(TestBase.GENERAL, 40)
                 });
             }
 
@@ -149,9 +153,6 @@ namespace addressbook_test_data_generators
                 StreamWriter writer = new StreamWriter(fileName);
                 switch (dataFormat)
                 {
-                    case "csv":
-                        WriteContactsToCsvFile(contacts, writer);
-                        break;
                     case "xml":
                         WriteContactsToXmlFile(contacts, writer);
                         break;
@@ -159,7 +160,7 @@ namespace addressbook_test_data_generators
                         WriteContactsToJsonFile(contacts, writer);
                         break;
                     default:
-                        Console.WriteLine("Unrecognized file format.");
+                        Console.WriteLine(errMsg);
                         break;
                 }
                 writer.Close();
@@ -167,17 +168,6 @@ namespace addressbook_test_data_generators
             else
             {
                 WriteContactsToExcelFile(contacts, fileName);
-            }
-        }
-
-
-        private static void WriteContactsToCsvFile(List<ContactData> contacts, StreamWriter writer)
-        {
-            foreach (ContactData contact in contacts)
-            {
-                writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5},{6},{7}",
-                    contact.FirstName, contact.LastName, contact.Email1, contact.Email2, contact.Email3,
-                    contact.HomePhone, contact.MobilePhone, contact.WorkPhone));
             }
         }
 
@@ -216,6 +206,9 @@ namespace addressbook_test_data_generators
                 wSheet.Cells[row, 6] = contact.HomePhone;
                 wSheet.Cells[row, 7] = contact.MobilePhone;
                 wSheet.Cells[row, 8] = contact.WorkPhone;
+                wSheet.Cells[row, 9] = contact.Fax;
+                wSheet.Cells[row, 10] = contact.SecondaryPhone;
+                wSheet.Cells[row, 11] = contact.PrimaryAddress;
                 row++;
             }
 

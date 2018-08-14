@@ -16,15 +16,18 @@ namespace WebAddressbookTests
         {
             CreateGroupForTestIfNecessary();
 
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-            int groupToRemove = 0;
-            app.Groups.Delete(groupToRemove);
+            List<GroupData> oldGroups = GroupData.GetAllRecordsFromDB();
+
+            int groupNumToRemove = 0;
+            string groupIdToRemove = oldGroups[groupNumToRemove].Id;
+            app.Groups.DeleteById(groupIdToRemove);
+            
             // First check if lists' sizes are equal
             Assert.AreEqual(oldGroups.Count - 1, app.Groups.Count());
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAllRecordsFromDB();
 
-            oldGroups.RemoveAt(groupToRemove);
+            oldGroups.RemoveAt(groupNumToRemove);
             Assert.AreEqual(newGroups, oldGroups);
         }
     }

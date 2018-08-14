@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -19,6 +20,14 @@ namespace WebAddressbookTests
             {
                 driver.FindElement(locator).Clear();
                 driver.FindElement(locator).SendKeys(text);
+            }
+        }
+
+        protected void SelectDropdownItemByText(By locator, string text)
+        {
+            if (text != null && text != "")
+            {
+                new SelectElement(driver.FindElement(locator)).SelectByText(text);
             }
         }
 

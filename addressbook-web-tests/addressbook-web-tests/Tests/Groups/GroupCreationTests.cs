@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using System.Linq;
 using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Text;
@@ -36,11 +37,12 @@ namespace WebAddressbookTests
         public static IEnumerable<GroupData> GroupDataFromCsvFile()
         {
             List<GroupData> groups = new List<GroupData>();
-            string[] lines =  File.ReadAllLines(@"groups.csv");
+            string[] lines = File.ReadAllLines(@"groups.csv");
             foreach (string line in lines)
             {
                 string[] fields = line.Split(',');
-                groups.Add(new GroupData(fields[0]) {
+                groups.Add(new GroupData(fields[0])
+                {
                     Header = fields[1],
                     Footer = fields[2]
                 });
@@ -80,7 +82,8 @@ namespace WebAddressbookTests
 
             for (int i = 1; i <= wSheetRange.Rows.Count; i++)
             {
-                groups.Add(new GroupData() {
+                groups.Add(new GroupData()
+                {
                     Name = wSheetRange.Cells[i, 1].Value,
                     Header = wSheetRange.Cells[i, 2].Value,
                     Footer = wSheetRange.Cells[i, 3].Value
@@ -95,16 +98,16 @@ namespace WebAddressbookTests
         }
 
 
-        [Test, TestCaseSource("GroupDataFromExcelFile")]
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void GroupCreationTest(GroupData group)
         {
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAllRecordsFromDB();
 
             app.Groups.Create(group);
             // First check if lists' sizes are equal
             Assert.AreEqual(oldGroups.Count + 1, app.Groups.Count());
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAllRecordsFromDB();
 
             oldGroups.Add(group);
             oldGroups.Sort();
@@ -120,13 +123,13 @@ namespace WebAddressbookTests
             group.Header = "";
             group.Footer = "";
 
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAllRecordsFromDB();
 
             app.Groups.Create(group);
             // First check if lists' sizes are equal
             Assert.AreEqual(oldGroups.Count + 1, app.Groups.Count());
 
-            List<GroupData> newGroups = app.Groups.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAllRecordsFromDB();
 
             oldGroups.Add(group);
             oldGroups.Sort();
