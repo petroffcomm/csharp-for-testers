@@ -31,6 +31,14 @@ namespace WebAddressbookTests
             }
         }
 
+        protected void SelectDropdownItemById(By locator, string id)
+        {
+            if (id != null && id != "")
+            {
+                new SelectElement(driver.FindElement(locator)).SelectByValue(id);
+            }
+        }
+
         public bool IsElementPresent(By by)
         {
             try

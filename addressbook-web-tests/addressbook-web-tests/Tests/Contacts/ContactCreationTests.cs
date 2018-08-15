@@ -55,11 +55,11 @@ namespace WebAddressbookTests
         [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> oldContacts = ContactData.GetActiveRecordsFromDB();
 
             app.Contacts.Create(contact);
 
-            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> newContacts = ContactData.GetActiveRecordsFromDB();
 
             oldContacts.Add(contact);
             oldContacts.Sort();
@@ -79,7 +79,7 @@ namespace WebAddressbookTests
 
 
             start = DateTime.Now;
-            List<ContactData> fromDb = ContactData.GetAllRecordsFromDB();
+            List<ContactData> fromDb = ContactData.GetActiveRecordsFromDB();
             end = DateTime.Now;
             Console.WriteLine(end.Subtract(start));
 

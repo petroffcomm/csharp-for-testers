@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace WebAddressbookTests
 {
@@ -77,7 +78,36 @@ namespace WebAddressbookTests
         }
 
 
-        internal List<ContactData> GetContactsList()
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            appmanager.Naviator.OpenHomePage();
+            ClearGroupFilter();
+            SelectContactById(contact.Id);
+            SelectGroupToAdd(group.Id);
+            CommitAddingContactToGroup();
+
+            // wait until operation is completed - just to be sure
+            // we've alredy done that before going further
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+
+        public void RemoveContactFromGroup(ContactData contact, GroupData group)
+        {
+            appmanager.Naviator.OpenHomePage();
+            SetFilterForGroup(group);
+            SelectContactById(contact.Id);
+            CommitContactRemovalFromGroup();
+
+            // wait until operation is completed - just to be sure
+            // we've alredy done that before going further
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+        }
+
+
+        public List<ContactData> GetContactsList()
         {
             if (contactCache == null)
             {
@@ -327,6 +357,35 @@ namespace WebAddressbookTests
             /** string text = driver.FindElement(By.TagName("label")).Text;
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value); **/
+        }
+
+        public void ClearGroupFilter()
+        {
+            SelectDropdownItemByText(By.Name("group"), "[all]");
+        }
+
+
+        private void SetFilterForGroup(GroupData group)
+        {
+            SelectDropdownItemById(By.Name("group"), group.Id);
+        }
+
+
+        public void SelectGroupToAdd(string Id)
+        {
+            SelectDropdownItemById(By.Name("to_group"), Id);
+        }
+
+
+        public void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+
+        public void CommitContactRemovalFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
         }
     }
 }

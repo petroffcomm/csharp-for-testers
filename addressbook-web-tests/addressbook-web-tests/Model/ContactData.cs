@@ -105,7 +105,8 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (GetPhoneFormatted(HomePhone) + GetPhoneFormatted(MobilePhone) + GetPhoneFormatted(WorkPhone)).Trim();
+                    return (GetPhoneFormatted(HomePhone) + GetPhoneFormatted(MobilePhone)
+                            + GetPhoneFormatted(WorkPhone) + GetPhoneFormatted(SecondaryPhone)).Trim();
                 }
             }
             set
@@ -138,16 +139,26 @@ namespace WebAddressbookTests
 
         public ContactData()
         {
+            Init();
         }
 
 
         public ContactData(string name)
         {
             this.FirstName = name;
+            Init();
         }
 
 
-        public static List<ContactData> GetAllRecordsFromDB()
+        protected void Init()
+        {
+            // Initiate this pars to avoid NPEs in GetHashCode()
+            this.LastName = "";
+            this.PrimaryAddress = "";
+        }
+
+
+        public static List<ContactData> GetActiveRecordsFromDB()
         {
             List<ContactData> contacts = new List<ContactData>();
 
@@ -174,6 +185,22 @@ namespace WebAddressbookTests
         }
 
 
+        public static List<ContactData> GetAllRecordsFromDB()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                /** getting all records - including deleted **/
+
+                contacts = (from c in db.Contacts select c
+                            ).ToList();
+            }
+
+            return contacts;
+        }
+
+
         public bool Equals(ContactData other)
         {
             if (Object.ReferenceEquals(other, null))
@@ -186,12 +213,12 @@ namespace WebAddressbookTests
                 return true;
             }
 
-            bool ids_are_equal = (Id is null || other.Id is null || Id == other.Id);
+            bool idsAreEqual = (Id is null || other.Id is null || Id == other.Id);
 
-            return FirstName == other.FirstName 
-                && LastName == other.LastName
-                && PrimaryAddress == other.PrimaryAddress
-                && ids_are_equal;
+            return strFieldsAreEq(FirstName, other.FirstName)
+                && strFieldsAreEq(LastName, other.LastName)
+                && strFieldsAreEq(PrimaryAddress, other.PrimaryAddress)
+                && idsAreEqual;
         }
 
 
@@ -236,7 +263,7 @@ namespace WebAddressbookTests
 
         public override int GetHashCode()
         {
-            return FirstName.GetHashCode() + LastName.GetHashCode();
+            return FirstName.GetHashCode()  + LastName.GetHashCode();
         }
 
 

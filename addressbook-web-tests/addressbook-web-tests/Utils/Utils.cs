@@ -46,15 +46,21 @@ namespace WebAddressbookTests
         {
             string middleName = checkValueForEmptiness(contact.MiddleName);
             string HPage = checkValueForEmptiness(contact.HomePage);
+            string SecondaryPhone = checkPhoneForEmptiness("P", contact.SecondaryPhone);
 
             if (middleName != "")
                 middleName = " " + middleName + " ";
             else
                 middleName = " ";
-             
+
 
             if (HPage != "")
                 HPage = "Homepage:\r\n" + HPage + "\r\n";
+
+
+            if (SecondaryPhone != "")
+                SecondaryPhone = "\r\n" + SecondaryPhone + "\r\n";
+
 
             string contactDetaiedView = (checkValueForEmptiness(contact.FirstName) + middleName +
                                         checkValueForEmptiness(contact.LastName)).Replace("\r\n", "") + "\r\n" +
@@ -71,7 +77,7 @@ namespace WebAddressbookTests
                                         checkValueForEmptiness(contact.Email3) +
                                         HPage +
                                         "\r\n" + checkValueForEmptiness(contact.SecondaryAddress) + "\r\n" +
-                                        checkPhoneForEmptiness("P", contact.SecondaryPhone) + "\r\n" +
+                                        SecondaryPhone + 
                                         checkValueForEmptiness(contact.Notes);
 
 

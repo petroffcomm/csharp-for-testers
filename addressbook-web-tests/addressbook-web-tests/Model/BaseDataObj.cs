@@ -32,5 +32,13 @@ namespace WebAddressbookTests
             }
             return result;
         }
+
+
+        public bool strFieldsAreEq(string par1, string par2)
+        {
+            return (par1 is null && par2 == "")
+                || (par2 is null && par1 == "")
+                || par1 == par2;
+        }
     }
 }

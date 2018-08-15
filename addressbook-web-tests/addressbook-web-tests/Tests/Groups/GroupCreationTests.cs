@@ -136,5 +136,17 @@ namespace WebAddressbookTests
             newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
         }
+
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            List<GroupData> groups = GroupData.GetAllRecordsFromDB();
+            foreach (ContactData contact in groups[0].GetContacts())
+            {
+                Console.WriteLine(contact);
+            }
+        }
+
     }
 }

@@ -14,24 +14,26 @@ namespace WebAddressbookTests
         {
             CreateContactForTestIfNecessary();
 
-            int contactNumToModify = 5;
+            int contactNumToModify = 0;
             string postfix = DateTime.Now.ToString();
             ContactData contact = new ContactData()
             {
                 FirstName = "New FirstName - " + postfix,
-                LastName = "New LastName - " + postfix
+                LastName = "New LastName - " + postfix,
+                PrimaryAddress = "Test Primary Addr"
             };
 
-            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> oldContacts = ContactData.GetActiveRecordsFromDB();
 
             contact.Id = oldContacts[contactNumToModify].Id;
             app.Contacts.EditById(contact);
 
-            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> newContacts = ContactData.GetActiveRecordsFromDB();
 
             // Perform contact modification in old list
             oldContacts[contactNumToModify].FirstName = contact.FirstName;
             oldContacts[contactNumToModify].LastName = contact.LastName;
+            oldContacts[contactNumToModify].PrimaryAddress = contact.PrimaryAddress;
 
             // Compare results
             oldContacts.Sort();

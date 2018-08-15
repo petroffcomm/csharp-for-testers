@@ -12,12 +12,12 @@ namespace WebAddressbookTests
             CreateContactForTestIfNecessary();
             int contactNumToRemove = 0;
 
-            List<ContactData> oldContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> oldContacts = ContactData.GetActiveRecordsFromDB();
 
             ContactData contactToRemove = oldContacts[contactNumToRemove];
             app.Contacts.DeleteById(contactToRemove.Id);
 
-            List<ContactData> newContacts = ContactData.GetAllRecordsFromDB();
+            List<ContactData> newContacts = ContactData.GetActiveRecordsFromDB();
 
             oldContacts.RemoveAt(contactNumToRemove);
             oldContacts.Sort();
