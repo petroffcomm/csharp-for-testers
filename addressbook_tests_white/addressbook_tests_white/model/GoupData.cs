@@ -23,7 +23,17 @@ namespace addressbook_tests_white
 
         public bool Equals(GroupData other)
         {
-            return this.Name.Equals(other.Name);
-        }
+            if (Object.ReferenceEquals(other, null))
+                {
+                    return false;
+                }
+
+            if (Object.ReferenceEquals(this, other))
+                {
+                    return true;
+                }
+
+            return Name == other.Name;
+         }
     }
 }
