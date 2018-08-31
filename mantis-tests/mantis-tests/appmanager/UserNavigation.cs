@@ -20,11 +20,11 @@ namespace MantisTests
 
         public void OpenLoginPage()
         {
-            if ((driver.Url == baseUrl + "login_page.php"))
+            if ((driver.Url == baseUrl + "/login_page.php"))
             {
                 return;
             }
-            driver.Navigate().GoToUrl(baseUrl + "login_page.php");
+            driver.Navigate().GoToUrl(baseUrl + "/login_page.php");
         }
     }
 }

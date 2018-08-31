@@ -13,10 +13,22 @@ namespace MantisTests
         private string baseUrl;
         private string loginBtnXPath = "//input[@type='submit']";
 
+        // We store this info to be used by other modules.
+        private AccountData currAccount;
+        public AccountData CurrAccount
+        {
+            get
+            {
+                return currAccount;
+            }
+        }
+
+
         public LoginHelper(ApplicationManager appmanager, string baseUrl)
             : base(appmanager)
         {
             this.baseUrl = baseUrl;
+            currAccount = new AccountData();
         }
 
 
@@ -44,6 +56,8 @@ namespace MantisTests
 
             Type(By.Id("password"), account.Password);
             driver.FindElement(By.XPath(loginBtnXPath)).Click();
+
+            currAccount = account;
         }
 
 
@@ -64,7 +78,9 @@ namespace MantisTests
         {
             if (IsLoggedIn())
             {
-                driver.Navigate().GoToUrl(baseUrl + "logout_page.php");
+                driver.Navigate().GoToUrl(baseUrl + "/logout_page.php");
+                // Erase current account on Logout
+                currAccount = new AccountData();
             }
         }
 

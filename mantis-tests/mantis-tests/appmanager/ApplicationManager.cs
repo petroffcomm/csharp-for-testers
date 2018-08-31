@@ -17,6 +17,7 @@ namespace MantisTests
         public ProjectManagementHelper ProjectsAdministration { get; }
         public AdminHelper AdminNavigator { get; }
         public UserNavigation UserNavigator { get; }
+        public APIHelper API { get; }
 
         public RegUserHelper Registration { get; }
         public FtpHelper Ftp { get; }
@@ -35,12 +36,13 @@ namespace MantisTests
             options.BrowserExecutableLocation = @"c:\Program Files\Mozilla Firefox\firefox.exe";
             options.UseLegacyImplementation = true;
             driver = new FirefoxDriver(options);
-            baseURL = "http://localhost/mantisbt-2.16.0/";
+            baseURL = "http://localhost/mantisbt-2.16.0";
 
             Auth =  new LoginHelper(this, baseURL);
             ProjectsAdministration = new ProjectManagementHelper(this);
             AdminNavigator = new AdminHelper(this);
             UserNavigator = new UserNavigation(this, baseURL);
+            API = new APIHelper(this);
 
             Registration = new RegUserHelper(this);
             Ftp = new FtpHelper(this);
