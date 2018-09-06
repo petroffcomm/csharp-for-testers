@@ -16,6 +16,8 @@ namespace WebAddressbookTests
 
         public void Login(AccountData account)
         {
+            appmanager.Naviator.OpenHomePage();
+
             if (IsLoggedIn())
             {
                 if (IsLoggedInAs(account))

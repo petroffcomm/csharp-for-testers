@@ -21,6 +21,8 @@ namespace MantisTests
 
         public RegUserHelper Registration { get; }
         public FtpHelper Ftp { get; }
+        public JamesHelper MailServer { get; }
+        public MailHelper Mail { get; }
 
         private static ApplicationManager instance;
 
@@ -46,7 +48,8 @@ namespace MantisTests
 
             Registration = new RegUserHelper(this);
             Ftp = new FtpHelper(this);
-
+            MailServer = new JamesHelper(this);
+            Mail = new MailHelper(this);
         }
 
         // destructor. Called automatically.

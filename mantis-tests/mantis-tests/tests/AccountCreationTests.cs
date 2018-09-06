@@ -28,11 +28,14 @@ namespace MantisTests
         {
             AccountData account = new AccountData()
             {
-                Username = "testuser",
+                Username = "testuser16",
                 Password = "passwd",
-                EMail = "testuser@localhost.localdomain"
+                EMail = "testuser16@localhost.localdomain"
 
             };
+
+            app.MailServer.DeleteAccount(account);
+            app.MailServer.AddAccount(account);
 
             app.Registration.Register(account);
         }

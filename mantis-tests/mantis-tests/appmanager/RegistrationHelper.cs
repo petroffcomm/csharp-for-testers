@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -12,12 +12,40 @@ namespace MantisTests
     {
         public RegUserHelper(ApplicationManager appmanager) : base(appmanager) { }
 
-        internal void Register(AccountData account)
+        public void Register(AccountData account)
         {
             OpenMainPage();
             OpenRegistrationForm();
             FillRegistrationForm(account);
             SubmitRegistration();
+
+            String url = GetConfirmationUrl(account);
+            driver.Url = url;
+            FillPasswordForm(account);
+            SubmitPasswordForm();
+        }
+
+
+        private string GetConfirmationUrl(AccountData account)
+        {
+            string msg = appmanager.Mail.GetLastMail(account);
+            Match match = Regex.Match(msg, @"http://\S*");
+
+            return match.Value;
+        }
+
+
+        private void FillPasswordForm(AccountData account)
+        {
+            Type(By.Id("password"), account.Password);
+            Type(By.Id("password-confirm"), account.Password);
+        }
+
+
+        private void SubmitPasswordForm()
+        {
+            driver.FindElement(By.ClassName("submit-button"))
+                  .FindElement(By.TagName("button")).Click();
         }
 
 
